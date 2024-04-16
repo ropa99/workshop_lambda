@@ -1,17 +1,22 @@
 package se.lexicon;
 
 import se.lexicon.data.DataStorage;
-
+import java.util.function.*;
 public class Exercises {
 
     private final static DataStorage storage = DataStorage.INSTANCE;
-
+    static Consumer<String> printMe = (str) -> System.out.println(str);
     /*
        TODO:  1.	Find everyone that has firstName: “Erik” using findMany().
     */
     public static void exercise1(String message) {
         System.out.println(message);
         //Write your code here
+        Predicate<se.lexicon.model.Person> isErik = s -> s.getFirstName().equalsIgnoreCase("Erik");
+        java.util.List<se.lexicon.model.Person> pList = storage.findMany(isErik);
+        for(se.lexicon.model.Person p : pList){
+            printMe.accept(p.getFirstName());
+        }
 
         System.out.println("----------------------");
     }
@@ -22,6 +27,12 @@ public class Exercises {
     public static void exercise2(String message) {
         System.out.println(message);
         //Write your code here
+        Predicate<se.lexicon.model.Person> isFemale = s -> s.getGender().toString().equalsIgnoreCase("Female");
+        java.util.List<se.lexicon.model.Person> pList = storage.findMany(isFemale);
+        for(se.lexicon.model.Person p : pList){
+            printMe.accept(p.toString());
+        }
+
 
         System.out.println("----------------------");
     }
@@ -32,6 +43,13 @@ public class Exercises {
     public static void exercise3(String message) {
         System.out.println(message);
         //Write your code here
+        //java.time.format.DateTimeFormatter dt = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        java.time.LocalDate searchDate = java.time.LocalDate.of(2000,1,1);
+        Predicate<se.lexicon.model.Person> isBornAfterAndInc = s -> s.getBirthDate().isAfter(searchDate) || s.getBirthDate().isEqual(searchDate);
+        java.util.List<se.lexicon.model.Person> pList = storage.findMany(isBornAfterAndInc);
+        for(se.lexicon.model.Person p : pList){
+            printMe.accept(p.toString());
+        }
 
         System.out.println("----------------------");
     }
@@ -42,6 +60,11 @@ public class Exercises {
     public static void exercise4(String message) {
         System.out.println(message);
         //Write your code here
+        int pId = 123;
+        Predicate <se.lexicon.model.Person> id123 = (p) -> p.getId() == pId;
+        System.out.println(storage.findOne(id123).toString());
+        //se.lexicon.model.Person p =
+
 
         System.out.println("----------------------");
 
